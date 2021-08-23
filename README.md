@@ -11,7 +11,7 @@ So you can using PGSchema to your projects safely with any database connection d
 
 ## Laravel version
 
-Current package version works for Laravel `5+` .
+Current package version works for Laravel `6+` .
 
 
 ## Installation
