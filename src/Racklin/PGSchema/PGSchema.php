@@ -44,14 +44,15 @@ class PGSchema
      */
     public function schemaExists($schemaName, $databaseName = null)
     {
-        if ($this->getDatabaseDriverName($databaseName) == 'pgsql') {
-            $schema = DB::connection($databaseName)->table('information_schema.schemata')
-                ->select('schema_name')
-                ->where('schema_name', '=', $schemaName)
-                ->count();
+        if ($this->getDatabaseDriverName($databaseName) === 'pgsql') {
+            $schema = DB::connection($databaseName)->table('pg_namespace')
+                ->selectRaw(1)
+                ->where('nspname', '=', $schemaName)
+                ->exists();
 
             return ($schema > 0);
         }
+
         return true;
     }
 
