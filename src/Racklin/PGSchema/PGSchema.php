@@ -115,11 +115,10 @@ class PGSchema
                 $schemas = [$schemaName];
             }
 
-            // If not connected to database, only setting the schema to database config
-            // And laravel PostgresConnection will set search_path after connection created.
-            if (!isset(DB::getConnections()[$databaseName])) {
-                $this->setDatabaseSchemaConfig($schemaName, $databaseName);
-            } else {
+            // Always set config so reconnect would retain the latest selected schema
+            $this->setDatabaseSchemaConfig($schemaName, $databaseName);
+
+            if (isset(DB::getConnections()[$databaseName])) {
                 // set connection to schema
                 $query = 'SET search_path TO ' . implode(',', $schemas);
                 DB::connection($databaseName)->statement($query);
